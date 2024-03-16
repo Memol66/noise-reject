@@ -1,0 +1,28 @@
+# Define a function to apply median filter to a signal
+function filtered_signal = applyMedianFilter(signal, window_size)
+    signal_length = length(signal);
+    filtered_signal = zeros(1, signal_length);
+    half_window = floor(window_size / 2);
+    
+    for i = 1:signal_length
+        start_index = max(1, i - half_window);
+        end_index = min(signal_length, i + half_window);
+        window = signal(start_index:end_index);
+        filtered_signal(i) = median(window);
+    end
+end
+
+# Generate a random signal with noise
+t = linspace(0, 2*pi, 100);
+y = sin(t) + 0.1 * randn(size(t));
+
+# Apply median filter to remove noise
+filtered_y = applyMedianFilter(y, 5); # 5 represents the size of the filter window
+
+# Plot the original signal and the filtered signal
+figure;
+plot(t, y, 'b', t, filtered_y, 'r');
+legend('Original Signal', 'Filtered Signal');
+xlabel('Time');
+ylabel('Amplitude');
+title('Noise Removal using Median Filter');
